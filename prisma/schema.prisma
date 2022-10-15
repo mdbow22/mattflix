@@ -62,3 +62,24 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+model Movies {
+    id              Int      @id @default(autoincrement())
+    title           String
+    releaseYear     Int
+    director        String
+    genre           String
+    collection      String?
+    rtScore         Int?
+    sortTitle       String
+    movieId         String?
+    addedDate       DateTime
+}
+
+model Requests {
+    id              Int      @id @default(autoincrement())
+    title           String
+    year            Int?
+    comments        String?
+    addedDate       DateTime
+}
