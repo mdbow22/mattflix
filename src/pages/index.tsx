@@ -3,7 +3,6 @@ import Head from "next/head";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
-
   const { data, isLoading, isSuccess } = trpc.movies.getLatest.useQuery();
   const {
     data: requests,
@@ -22,19 +21,21 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="container mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center p-4">
-        <h1 className="text-5xl font-extrabold leading-normal text-red-700 md:text-[5rem]">
-          Matt<span className="text-white/95">flix</span>
+        <h1 className="text-5xl font-extrabold leading-normal text-primary  md:text-[5rem]">
+          Mattflix
         </h1>
         <div className="flex justify-around gap-4">
           <button
             type="button"
-            className="rounded bg-white/95 px-3 py-2 text-black/90 transition-all hover:bg-white/75 active:scale-95"
+            className="btn btn-primary"
+            //className="rounded bg-white/95 px-3 py-2 text-black/90 transition-all hover:bg-white/75 active:scale-95"
           >
             Browse
           </button>
           <button
             type="button"
-            className="rounded border border-white/95 px-3 py-2 transition-all hover:bg-white/75 hover:text-black/90 active:scale-95"
+            className="btn btn-outline"
+            //className="rounded border border-white/95 px-3 py-2 transition-all hover:bg-white/75 hover:text-black/90 active:scale-95"
           >
             Request
           </button>
@@ -42,7 +43,7 @@ const Home: NextPage = () => {
         <div id="recent-adds-table" className="mt-10">
           <h2 className="text-center text-3xl">New Additions</h2>
           {!isLoading && isSuccess && (
-            <div className="mt-5 flex flex-wrap justify-around gap-5">
+            <div className="mt-5 flex flex-wrap items-start justify-around gap-5">
               {data?.map((movie) => {
                 return (
                   <div
@@ -67,11 +68,12 @@ const Home: NextPage = () => {
           <h2 className="text-3xl">Latest Requests</h2>
           {!requestsLoading && requestSuccess && (
             <div className="mt-5 flex flex-wrap justify-around gap-5">
-              {requests?.map((request) => {
+              {requests?.map((request, i) => {
                 return (
                   <div
                     key={`request-${request.movieId}`}
-                    className="flex w-32 flex-col items-center"
+                    className="swap-off flex w-32 flex-col items-center"
+                    tabIndex={i}
                   >
                     <div>
                       <img
