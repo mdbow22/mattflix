@@ -82,4 +82,5 @@ model Requests {
     year            Int?
     comments        String?
     addedDate       DateTime
+    movieId         String
 }

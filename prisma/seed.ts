@@ -80,7 +80,33 @@ const main = async () => {
     })
 
     if(movies.count) {
-        console.log('success!');
+        console.log('movies added!');
+    }
+
+    const requests = await prisma.requests.createMany({
+        data: [
+            {
+                title: 'Bones and All',
+                year: 2022,
+                comments: 'Comes out in November',
+                addedDate: new Date(),
+                movieId: 'tt10168670',
+            },
+            {
+                title: 'Freaky Friday',
+                addedDate: new Date('2022-10-01'),
+                movieId: 'tt0322330',
+            },
+            {
+                title: 'Troy',
+                addedDate: new Date('2022-10-13'),
+                movieId: 'tt0332452',
+            }
+        ]
+    })
+
+    if(requests.count) {
+        console.log('requests added!');
     }
 }
 

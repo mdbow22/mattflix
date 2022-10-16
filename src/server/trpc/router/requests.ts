@@ -2,9 +2,9 @@ import { router, publicProcedure } from "../trpc";
 import { DateTime } from "luxon";
 import { env } from "../../../env/server.mjs";
 
-export const movieRouter = router({
-  getLatest: publicProcedure.query(async ({ ctx }) => {
-    const recentMovies = await ctx.prisma.movies.findMany({
+export const requestRouter = router({
+  getNewest: publicProcedure.query(async ({ ctx }) => {
+    const requests = await ctx.prisma.requests.findMany({
       where: {
         addedDate: {
           gte: DateTime.now().minus({ days: 7 }).toJSDate(),
@@ -16,8 +16,8 @@ export const movieRouter = router({
       take: 6,
     });
 
-    if (recentMovies) {
-      const withOmdbData = recentMovies.map(async (movie) => {
+    if (requests) {
+      const withOmdbData = requests.map(async (movie) => {
         const data = await fetch(
           `http://www.omdbapi.com/?apikey=${env.OMDB_KEY}&i=${movie.movieId}`
         );
@@ -33,9 +33,7 @@ export const movieRouter = router({
       });
 
       return Promise.all(withOmdbData);
+
     }
-  }),
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.movies.findMany();
   }),
 });
