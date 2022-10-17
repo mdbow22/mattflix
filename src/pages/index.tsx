@@ -1,5 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
+import Loader from '../components/Loader';
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
@@ -25,13 +27,15 @@ const Home: NextPage = () => {
           Mattflix
         </h1>
         <div className="flex justify-around gap-4">
-          <button
-            type="button"
-            className="btn btn-primary"
-            //className="rounded bg-white/95 px-3 py-2 text-black/90 transition-all hover:bg-white/75 active:scale-95"
-          >
-            Browse
-          </button>
+          <Link href="/browse">
+            <button
+              type="button"
+              className="btn btn-primary"
+              //className="rounded bg-white/95 px-3 py-2 text-black/90 transition-all hover:bg-white/75 active:scale-95"
+            >
+              Browse
+            </button>
+          </Link>
           <button
             type="button"
             className="btn btn-outline"
@@ -42,6 +46,9 @@ const Home: NextPage = () => {
         </div>
         <div id="recent-adds-table" className="mt-10">
           <h2 className="text-center text-3xl">New Additions</h2>
+          {isLoading &&
+            <Loader />
+          }
           {!isLoading && isSuccess && (
             <div className="mt-5 flex flex-wrap items-start justify-around gap-5">
               {data?.map((movie) => {

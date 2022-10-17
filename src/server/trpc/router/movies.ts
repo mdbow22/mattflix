@@ -1,13 +1,14 @@
 import { router, publicProcedure } from "../trpc";
 import { DateTime } from "luxon";
 import { env } from "../../../env/server.mjs";
+import { z } from 'zod';
 
 export const movieRouter = router({
   getLatest: publicProcedure.query(async ({ ctx }) => {
     const recentMovies = await ctx.prisma.movies.findMany({
       where: {
         addedDate: {
-          gte: DateTime.now().minus({ days: 7 }).toJSDate(),
+          gte: DateTime.now().startOf('month').toJSDate(),
         },
       },
       orderBy: {
@@ -36,6 +37,20 @@ export const movieRouter = router({
     }
   }),
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.movies.findMany();
+    return ctx.prisma.movies.findMany({
+      orderBy: {
+        sortTitle: 'asc',
+      }
+    });
   }),
+  getOmdb: publicProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .query( async ({ input }) => {
+      const data = await fetch(`http://www.omdbapi.com/?apikey=${env.OMDB_KEY}&i=${input.id}&plot=short`);
+      const res = await data.json();
+
+      return res;
+    })
 });

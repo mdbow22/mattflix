@@ -6,75 +6,147 @@ const main = async () => {
     const movies = await prisma.movies.createMany({
         data: [
             {
-                title: '10 Cloverfield Lane',
-                releaseYear: 2016,
-                director: 'Dan Trachtenberg',
+                title: 'The Eyes of Tammy Faye',
+                releaseYear: 2021,
+                director: 'Michael Showalter',
+                genre: 'Biopic',
+                rtScore: 68,
+                sortTitle: 'Eyes of Tammy Faye',
+                movieId: 'tt9115530',
+                addedDate: new Date('2022-03-29'),
+            },
+            {
+                title: 'CODA',
+                releaseYear: 2021,
+                director: 'Sian Heder',
+                genre: 'Drama',
+                rtScore: 94,
+                sortTitle: 'CODA',
+                movieId: 'tt10366460',
+                addedDate: new Date('2022-03-29'),
+            },
+            {
+                title: 'Where the Crawdads Sing',
+                releaseYear: 2022,
+                director: 'Olivia Newman',
+                genre: 'Mystery',
+                rtScore: 33,
+                sortTitle: 'Where the Crawdads Sing',
+                movieId: 'tt9411972',
+                addedDate: new Date('2022-10-05'),
+            },
+            {
+                title: 'Taken',
+                releaseYear: 2008,
+                director: 'Pierre Morel',
+                genre: 'Action',
+                rtScore: 59,
+                sortTitle: 'Taken',
+                movieId: 'tt0936501',
+                addedDate: new Date('2022-10-05')
+            },
+            {
+                title: 'Taken 2',
+                releaseYear: 2012,
+                director: 'Olivier Megaton',
+                genre: 'Action',
+                rtScore: 22,
+                sortTitle: 'Taken 2',
+                movieId: 'tt1397280',
+                addedDate: new Date('2022-10-05')
+            },
+            {
+                title: 'Taken 3',
+                releaseYear: 2015,
+                director: 'Olivier Megaton',
+                genre: 'Action',
+                rtScore: 13,
+                sortTitle: 'Taken 3',
+                movieId: 'tt2446042',
+                addedDate: new Date('2022-10-05')
+            },
+            {
+                title: 'Morbius',
+                releaseYear: 2022,
+                director: 'Daniel Espinosa',
+                genre: 'Superhero',
+                rtScore: 15,
+                sortTitle: 'Morbius',
+                movieId: 'tt5108870',
+                addedDate: new Date('2022-10-05')
+            },
+            {
+                title: 'Spider-Man: No Way Home',
+                releaseYear: 2021,
+                director: 'Jon Watts',
+                genre: 'Superhero',
+                rtScore: 93,
+                collection: 'MCU',
+                sortTitle: 'Spider-Man: No Way Home',
+                movieId: 'tt10872600',
+                addedDate: new Date('2022-10-05')
+            },
+            {
+                title: 'Venom',
+                releaseYear: 2018,
+                director: 'Ruben Fleischer',
+                genre: 'Superhero',
+                rtScore: 30,
+                sortTitle: 'Venom',
+                movieId: 'tt1270797',
+                addedDate: new Date('2022-10-03')
+            },
+            {
+                title: 'The Social Network',
+                releaseYear: 2010,
+                director: 'David Fincher',
+                genre: 'Biopic',
+                rtScore: 96,
+                sortTitle: 'Social Network',
+                movieId: 'tt1285016',
+                addedDate: new Date('2022-10-03')
+            },
+            {
+                title: 'Thor: Love and Thunder',
+                releaseYear: 2022,
+                director: 'Taika Waititi',
+                genre: 'Superhero',
+                rtScore: 64,
+                collection: 'MCU',
+                sortTitle: 'Thor: Love and Thunder',
+                movieId: 'tt10648342',
+                addedDate: new Date('2022-10-03')
+            },
+            {
+                title: 'Promising Young Woman',
+                releaseYear: 2020,
+                director: 'Emerald Fennell',
                 genre: 'Thriller',
                 rtScore: 90,
-                sortTitle: '10 Cloverfield Land',
-                movieId: 'tt1179933',
-                addedDate: new Date(),
+                sortTitle: 'Promising Young Woman',
+                movieId: 'tt9620292',
+                addedDate: new Date('2022-10-03')
             },
             {
-                title: '101 Dalmatians',
-                releaseYear: 1961,
-                director: 'Clyde Geronimi',
-                genre: 'Family',
-                rtScore: 98,
-                sortTitle: '101 Dalmatians',
-                movieId: 'tt0055254',
-                addedDate: new Date(),
-            },
-            {
-                title: '12 Monkeys',
-                releaseYear: 1995,
-                director: 'Terry Gilliam',
+                title: 'Prey',
+                releaseYear: 2022,
+                director: 'Dan Trachtenberg',
                 genre: 'Sci-fi',
-                rtScore: 89,
-                sortTitle: '12 Monkeys',
-                movieId: 'tt0114746',
-                addedDate: new Date(),
+                collection: 'Predator',
+                rtScore: 93,
+                sortTitle: 'Prey',
+                movieId: 'tt11866324',
+                addedDate: new Date('2022-10-03')
             },
             {
-                title: '2 Fast 2 Furious',
-                releaseYear: 2003,
-                director: 'John Singleton',
-                genre: 'Action',
-                rtScore: 36,
-                collection: 'Fast & Furious',
-                sortTitle: '2 Fast 2 Furious',
-                movieId: 'tt0322259',
-                addedDate: new Date()
-            },
-            {
-                title: '28 Days Later',
-                releaseYear: 2002,
-                director: 'Danny Boyle',
+                title: 'Nope',
+                releaseYear: 2022,
+                director: 'Jordan Peele',
                 genre: 'Horror',
-                rtScore: 86,
-                sortTitle: '28 Days Later',
-                movieId: 'tt0289043',
-                addedDate: new Date()
-            },
-            {
-                title: '300',
-                releaseYear: 2007,
-                director: 'Zack Snyder',
-                genre: 'Action',
-                rtScore: 60,
-                sortTitle: '300',
-                movieId: 'tt0416449',
-                addedDate: new Date()
-            },
-            {
-                title: '300: Rise of an Empire',
-                releaseYear: 2014,
-                director: 'Noam Murro',
-                genre: 'Action',
-                rtScore: 44,
-                sortTitle: '300: Rise of an Empire',
-                movieId: 'tt1253863',
-                addedDate: new Date()
+                rtScore: 82,
+                sortTitle: 'Nope',
+                movieId: 'tt10954984',
+                addedDate: new Date('2022-10-03')
             },
         ]
     })
@@ -83,31 +155,31 @@ const main = async () => {
         console.log('movies added!');
     }
 
-    const requests = await prisma.requests.createMany({
-        data: [
-            {
-                title: 'Bones and All',
-                year: 2022,
-                comments: 'Comes out in November',
-                addedDate: new Date(),
-                movieId: 'tt10168670',
-            },
-            {
-                title: 'Freaky Friday',
-                addedDate: new Date('2022-10-01'),
-                movieId: 'tt0322330',
-            },
-            {
-                title: 'Troy',
-                addedDate: new Date('2022-10-13'),
-                movieId: 'tt0332452',
-            }
-        ]
-    })
+    // const requests = await prisma.requests.createMany({
+    //     data: [
+    //         {
+    //             title: 'Bones and All',
+    //             year: 2022,
+    //             comments: 'Comes out in November',
+    //             addedDate: new Date(),
+    //             movieId: 'tt10168670',
+    //         },
+    //         {
+    //             title: 'Freaky Friday',
+    //             addedDate: new Date('2022-10-01'),
+    //             movieId: 'tt0322330',
+    //         },
+    //         {
+    //             title: 'Troy',
+    //             addedDate: new Date('2022-10-13'),
+    //             movieId: 'tt0332452',
+    //         }
+    //     ]
+    // })
 
-    if(requests.count) {
-        console.log('requests added!');
-    }
+    // if(requests.count) {
+    //     console.log('requests added!');
+    // }
 }
 
 main().then(async () => {
