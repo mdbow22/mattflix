@@ -36,6 +36,7 @@ const Home: NextPage = () => {
               Browse
             </button>
           </Link>
+          <Link href="/request">
           <button
             type="button"
             className="btn btn-outline"
@@ -43,6 +44,7 @@ const Home: NextPage = () => {
           >
             Request
           </button>
+          </Link>
         </div>
         <div id="recent-adds-table" className="mt-10">
           <h2 className="text-center text-3xl">New Additions</h2>

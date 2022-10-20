@@ -1,6 +1,7 @@
 import { router, publicProcedure } from "../trpc";
 import { DateTime } from "luxon";
 import { env } from "../../../env/server.mjs";
+import { z } from 'zod';
 
 export const requestRouter = router({
   getNewest: publicProcedure.query(async ({ ctx }) => {
@@ -36,4 +37,19 @@ export const requestRouter = router({
 
     }
   }),
+  searchRequests: publicProcedure
+    .input(z.object({
+        term: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+        const possibleMatches = await ctx.prisma.requests.findMany({
+            where: {
+                title: {
+                    contains: input.term,
+                }
+            }
+        })
+        
+        return possibleMatches;
+    })
 });

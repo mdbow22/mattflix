@@ -1,8 +1,12 @@
-import { Movies } from "@prisma/client";
+import { Collections, Directors, Genres, Movies } from "@prisma/client";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { trpc } from "../utils/trpc";
 
-const MoreInfoModal: React.FC<{ movie: Movies }> = ({ movie }) => {
+const MoreInfoModal: React.FC<{ movie: (Movies & {
+    Directors: Directors;
+    Genres: Genres;
+    Collections: Collections | null;
+}) }> = ({ movie }) => {
   const [opened, setOpened] = useState(false);
   const { data, isSuccess, isError } = trpc.movies.getOmdb.useQuery(
     { id: movie.movieId! },
@@ -27,7 +31,7 @@ const MoreInfoModal: React.FC<{ movie: Movies }> = ({ movie }) => {
         className="modal-toggle"
       />
       <div className="modal backdrop-blur-md">
-        <div className="modal-box relative w-full sm:w-1/2 max-w-xl">
+        <div className="modal-box relative w-full sm:w-1/2 max-w-2xl">
           <label
             htmlFor={`modal-${movie.movieId}`}
             className="btn btn-circle btn-sm absolute right-2 top-2"
@@ -45,7 +49,7 @@ const MoreInfoModal: React.FC<{ movie: Movies }> = ({ movie }) => {
                 <h3 className="text-left text-xl font-bold ">{movie.title} <span className='badge whitespace-normal'>{data.Rated}</span></h3>
                 </div>
                 <h4 className="whitespace-normal text-left text-sm">
-                  Director: {movie.director}
+                  Director: {movie.Directors.name}
                 </h4>
                 <h4 className="whitespace-normal text-left text-sm">
                   Written By: {data?.Writer}

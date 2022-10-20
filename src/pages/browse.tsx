@@ -32,7 +32,7 @@ const Browse: NextPage = () => {
                             <tr key={movie.movieId}>
                                 <td className='text-center'>{i + 1}</td>
                                 <td className='text-center'>{movie.title}</td>
-                                <td className='text-center'>{movie.director}</td>
+                                <td className='text-center'>{movie.Directors.name}</td>
                                 <td className='text-center'>{movie.releaseYear}</td>
                                 <td className='text-center'>{movie.rtScore}%</td>
                                 <td className='text-center'>

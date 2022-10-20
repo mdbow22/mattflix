@@ -3,6 +3,7 @@
 
 generator client {
     provider = "prisma-client-js"
+    previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -64,20 +65,41 @@ model VerificationToken {
 }
 
 model Movies {
-    id              Int      @id @default(autoincrement())
+    id              Int             @id @default(autoincrement())
     title           String
     releaseYear     Int
-    director        String
-    genre           String
-    collection      String?
+    director        Int
+    genre           Int
+    collection      Int?
     rtScore         Int?
     sortTitle       String
-    movieId         String?
+    movieId         String?         @unique
     addedDate       DateTime
+    Directors       Directors       @relation(fields: [director], references: [id])
+    Genres          Genres          @relation(fields: [genre], references: [id])
+    Collections     Collections?    @relation(fields: [collection], references: [id])
+}
+
+model Directors {
+    id          Int     @id @default(autoincrement())
+    name        String  @unique
+    movie       Movies[]
+}
+
+model Genres {
+    id          Int     @id @default(autoincrement())
+    name        String  @unique
+    movie       Movies[]
+}
+
+model Collections {
+    id          Int     @id @default(autoincrement())
+    name        String  @unique
+    movie       Movies[]
 }
 
 model Requests {
-    id              Int      @id @default(autoincrement())
+    id              Int         @id @default(autoincrement())
     title           String
     year            Int?
     comments        String?
