@@ -3,8 +3,8 @@ import { Prisma, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const main = async () => {
-    const newMovies = await prisma.movies.createMany({
-        data: [
+
+    const movies = [
             {
               title: '10 Cloverfield Lane',
               releaseYear: 2016,
@@ -12,7 +12,7 @@ const main = async () => {
               genre: 1,
               rtScore: 90,
               sortTitle: '10 Cloverfield Lane',
-              movieId: 'tt1179933',
+              movieId: 333371,
               addedDate: new Date('2019-10-05'),
             },
             {
@@ -22,7 +22,7 @@ const main = async () => {
               genre: 2,
               rtScore: 98,
               sortTitle: '101 Dalmations',
-              movieId: 'tt0055254',
+              movieId: 12230,
               addedDate: new Date('2020-09-02'),
             },
             {
@@ -32,7 +32,7 @@ const main = async () => {
               genre: 3,
               rtScore: 89,
               sortTitle: '12 Monkeys',
-              movieId: 'tt0114746',
+              movieId: 63,
               addedDate: new Date('2021-03-19'),
             },
             {
@@ -43,7 +43,7 @@ const main = async () => {
               collection: 1,
               rtScore: 36,
               sortTitle: '2 Fast 2 Furious',
-              movieId: 'tt0322259',
+              movieId: 584,
               addedDate: new Date('2020-08-28'),
             },
             {
@@ -53,7 +53,7 @@ const main = async () => {
               genre: 5,
               rtScore: 86,
               sortTitle: '28 Days Later',
-              movieId: 'tt0289043',
+              movieId: 170,
               addedDate: new Date('2020-08-18'),
             },
             {
@@ -63,7 +63,7 @@ const main = async () => {
               genre: 4,
               rtScore: 60,
               sortTitle: '300',
-              movieId: 'tt0416449',
+              movieId: 1271,
               addedDate: new Date('2020-08-18'),
             },
             {
@@ -73,7 +73,7 @@ const main = async () => {
               genre: 4,
               rtScore: 44,
               sortTitle: '300: Rise of an Empire',
-              movieId: 'tt1253863',
+              movieId: 53182,
               addedDate: new Date('2020-08-18'),
             },
             {
@@ -83,7 +83,7 @@ const main = async () => {
               genre: 3,
               rtScore: 83,
               sortTitle: 'Ad Astra',
-              movieId: 'tt2935510',
+              movieId: 419704,
               addedDate: new Date('2021-03-19'),
             },
             {
@@ -93,7 +93,7 @@ const main = async () => {
               genre: 6,
               rtScore: 96,
               sortTitle: 'Adventures of Priscilla, Queen of the Desert',
-              movieId: 'tt0109045',
+              movieId: 2759,
               addedDate: new Date('2021-04-06'),
             },
             {
@@ -103,7 +103,7 @@ const main = async () => {
               genre: 6,
               rtScore: 97,
               sortTitle: 'Airplane',
-              movieId: 'tt0080339',
+              movieId: 813,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -113,7 +113,7 @@ const main = async () => {
               genre: 7,
               rtScore: 90,
               sortTitle: 'Akira',
-              movieId: 'tt0094625',
+              movieId: 149,
               addedDate: new Date('2020-09-13'),
             },
             {
@@ -123,7 +123,7 @@ const main = async () => {
               genre: 2,
               rtScore: 94,
               sortTitle: 'Aladdin',
-              movieId: 'tt0103639',
+              movieId: 812,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -133,7 +133,7 @@ const main = async () => {
               genre: 2,
               rtScore: 81,
               sortTitle: 'Alice in Wonderland',
-              movieId: 'tt0043274',
+              movieId: 12092,
               addedDate: new Date('2020-11-18'),
             },
             {
@@ -143,7 +143,7 @@ const main = async () => {
               genre: 2,
               rtScore: 51,
               sortTitle: 'Alice in Wonderland',
-              movieId: 'tt1014759',
+              movieId: 12155,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -154,7 +154,7 @@ const main = async () => {
               collection: 2,
               rtScore: 97,
               sortTitle: 'Alien',
-              movieId: 'tt0078748',
+              movieId: 348,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -165,7 +165,7 @@ const main = async () => {
               collection: 2,
               rtScore: 42,
               sortTitle: 'Alien 3',
-              movieId: 'tt0103644',
+              movieId: 8077,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -176,7 +176,7 @@ const main = async () => {
               collection: 2,
               rtScore: 56,
               sortTitle: 'Alien Resurrection',
-              movieId: 'tt0118583',
+              movieId: 8078,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -187,7 +187,7 @@ const main = async () => {
           
               rtScore: 21,
               sortTitle: 'Alien vs Predator',
-              movieId: 'tt0370263',
+              movieId: 395,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -198,7 +198,7 @@ const main = async () => {
           
               rtScore: 11,
               sortTitle: 'Alien vs Predator: Requiem',
-              movieId: 'tt0758730',
+              movieId: 440,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -209,7 +209,7 @@ const main = async () => {
               collection: 2,
               rtScore: 66,
               sortTitle: 'Alien: Covenant',
-              movieId: 'tt2316204',
+              movieId: 126889,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -220,7 +220,7 @@ const main = async () => {
               collection: 2,
               rtScore: 99,
               sortTitle: 'Aliens',
-              movieId: 'tt0090605',
+              movieId: 679,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -228,10 +228,9 @@ const main = async () => {
               releaseYear: 2004,
               director: 21,
               genre: 6,
-          
               rtScore: 66,
               sortTitle: 'Anchorman',
-              movieId: 'tt0357413',
+              movieId: 8699,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -242,7 +241,7 @@ const main = async () => {
               collection: 3,
               rtScore: 90,
               sortTitle: 'And Now For Something Completely Different',
-              movieId: 'tt0066765',
+              movieId: 9267,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -250,10 +249,9 @@ const main = async () => {
               releaseYear: 2009,
               director: 23,
               genre: 1,
-          
               rtScore: 37,
               sortTitle: 'Angels & Demons',
-              movieId: 'tt0808151',
+              movieId: 13448,
               addedDate: new Date('2021-01-05'),
             },
             {
@@ -261,10 +259,9 @@ const main = async () => {
               releaseYear: 2017,
               director: 24,
               genre: 8,
-          
               rtScore: 78,
               sortTitle: 'Anna and the Apocalypse',
-              movieId: 'tt6433880',
+              movieId: 461928,
               addedDate: new Date('2020-08-24'),
             },
             {
@@ -272,10 +269,9 @@ const main = async () => {
               releaseYear: 2014,
               director: 25,
               genre: 5,
-          
               rtScore: 28,
               sortTitle: 'Annabelle',
-              movieId: 'tt3322940',
+              movieId: 250546,
               addedDate: new Date('2021-06-27'),
             },
             {
@@ -283,10 +279,9 @@ const main = async () => {
               releaseYear: 2019,
               director: 26,
               genre: 5,
-          
               rtScore: 64,
               sortTitle: 'Annabelle Comes Home',
-              movieId: 'tt8350360',
+              movieId: 521029,
               addedDate: new Date('2021-06-27'),
             },
             {
@@ -294,10 +289,9 @@ const main = async () => {
               releaseYear: 2017,
               director: 27,
               genre: 5,
-          
               rtScore: 70,
               sortTitle: 'Annabelle: Creation',
-              movieId: 'tt5140878',
+              movieId: 396422,
               addedDate: new Date('2021-06-27'),
             },
             {
@@ -305,10 +299,9 @@ const main = async () => {
               releaseYear: 1950,
               director: 28,
               genre: 8,
-          
               rtScore: 100,
               sortTitle: 'Annie Get Your Gun',
-              movieId: 'tt0042200',
+              movieId: 25209,
               addedDate: new Date('2020-12-10'),
             },
             {
@@ -319,7 +312,7 @@ const main = async () => {
           
               rtScore: 65,
               sortTitle: 'Aquaman',
-              movieId: 'tt1477834',
+              movieId: 297802,
               addedDate: new Date('2020-04-13'),
             },
             {
@@ -330,7 +323,7 @@ const main = async () => {
           
               rtScore: 88,
               sortTitle: 'Arsenic and Old Lace',
-              movieId: 'tt0036613',
+              movieId: 212,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -341,7 +334,7 @@ const main = async () => {
               collection: 4,
               rtScore: 44,
               sortTitle: "At World's End",
-              movieId: 'tt0449088',
+              movieId: 285,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -352,7 +345,7 @@ const main = async () => {
           
               rtScore: 49,
               sortTitle: 'Atlantis: the Lost Empire',
-              movieId: 'tt0230011',
+              movieId: 10865,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -363,7 +356,7 @@ const main = async () => {
           
               rtScore: 78,
               sortTitle: 'Atomic Blonde',
-              movieId: 'tt2406566',
+              movieId: 341013,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -374,7 +367,7 @@ const main = async () => {
               collection: 5,
               rtScore: 65,
               sortTitle: 'Attack of the Clones',
-              movieId: 'tt0121765',
+              movieId: 1894,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -385,7 +378,7 @@ const main = async () => {
           
               rtScore: 81,
               sortTitle: 'Audition',
-              movieId: 'tt0235198',
+              movieId: 11075,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -396,7 +389,7 @@ const main = async () => {
           
               rtScore: 82,
               sortTitle: 'Avatar',
-              movieId: 'tt0499549',
+              movieId: 19995,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -407,7 +400,7 @@ const main = async () => {
               collection: 6,
               rtScore: 76,
               sortTitle: 'Avengers: Age of Ultron',
-              movieId: 'tt2395427',
+              movieId: 99861,
               addedDate: new Date('2020-11-26'),
             },
             {
@@ -418,7 +411,7 @@ const main = async () => {
               collection: 6,
               rtScore: 94,
               sortTitle: 'Avengers: Endgame',
-              movieId: 'tt4154796',
+              movieId: 299534,
               addedDate: new Date('2020-11-26'),
             },
             {
@@ -429,7 +422,7 @@ const main = async () => {
               collection: 6,
               rtScore: 85,
               sortTitle: 'Avengers: Infinity War',
-              movieId: 'tt4154756',
+              movieId: 299536,
               addedDate: new Date('2020-11-18'),
             },
             {
@@ -440,7 +433,7 @@ const main = async () => {
           
               rtScore: 98,
               sortTitle: 'Babadook',
-              movieId: 'tt2321549',
+              movieId: 242224,
               addedDate: new Date('2020-08-18'),
             },
             {
@@ -451,7 +444,7 @@ const main = async () => {
           
               rtScore: 97,
               sortTitle: 'Babe',
-              movieId: 'tt0112431',
+              movieId: 9598,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -462,7 +455,7 @@ const main = async () => {
           
               rtScore: 96,
               sortTitle: 'Back to the Future',
-              movieId: 'tt0088763',
+              movieId: 105,
               addedDate: new Date('2020-09-01'),
             },
             {
@@ -473,7 +466,7 @@ const main = async () => {
           
               rtScore: 65,
               sortTitle: 'Back to the Future Part 2',
-              movieId: 'tt0096874',
+              movieId: 165,
               addedDate: new Date('2020-09-01'),
             },
             {
@@ -484,7 +477,7 @@ const main = async () => {
               collection: 7,
               rtScore: 71,
               sortTitle: 'Batman',
-              movieId: 'tt0096895',
+              movieId: 268,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -495,7 +488,7 @@ const main = async () => {
               collection: 7,
               rtScore: 78,
               sortTitle: 'Batman (1966)',
-              movieId: 'tt0059968',
+              movieId: 2661,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -506,7 +499,7 @@ const main = async () => {
               collection: 7,
               rtScore: 84,
               sortTitle: 'Batman Begins',
-              movieId: 'tt0372784',
+              movieId: 272,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -517,7 +510,7 @@ const main = async () => {
               collection: 7,
               rtScore: 78,
               sortTitle: 'Batman Returns',
-              movieId: 'tt0103776',
+              movieId: 364,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -528,7 +521,7 @@ const main = async () => {
           
               rtScore: 88,
               sortTitle: 'Battle Royale',
-              movieId: 'tt0266308',
+              movieId: 3176,
               addedDate: new Date('2021-07-09'),
             },
             {
@@ -539,7 +532,7 @@ const main = async () => {
           
               rtScore: 87,
               sortTitle: 'Beasts of the Southern Wild',
-              movieId: 'tt2125435',
+              movieId: 84175,
               addedDate: new Date('2019-07-30'),
             },
             {
@@ -550,7 +543,7 @@ const main = async () => {
           
               rtScore: 95,
               sortTitle: 'Beautiful Day in the Neighborhood',
-              movieId: 'tt3224458',
+              movieId: 501907,
               addedDate: new Date('2021-04-07'),
             },
             {
@@ -561,7 +554,7 @@ const main = async () => {
           
               rtScore: 94,
               sortTitle: 'Beauty and the Beast',
-              movieId: 'tt0101414',
+              movieId: 10020,
               addedDate: new Date('2021-08-30'),
             },
             {
@@ -572,7 +565,7 @@ const main = async () => {
           
               rtScore: 50,
               sortTitle: 'Bee Movie',
-              movieId: 'tt0389790',
+              movieId: 5559,
               addedDate: new Date('2020-09-07'),
             },
             {
@@ -583,7 +576,7 @@ const main = async () => {
           
               rtScore: 84,
               sortTitle: 'Beetlejuice',
-              movieId: 'tt0094721',
+              movieId: 4011,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -594,7 +587,7 @@ const main = async () => {
           
               rtScore: 94,
               sortTitle: 'Best in Show',
-              movieId: 'tt0218839',
+              movieId: 13785,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -605,7 +598,7 @@ const main = async () => {
           
               rtScore: 97,
               sortTitle: 'Big',
-              movieId: 'tt0094737',
+              movieId: 2280,
               addedDate: new Date('2021-01-19'),
             },
             {
@@ -616,7 +609,7 @@ const main = async () => {
           
               rtScore: 75,
               sortTitle: 'Big Fish',
-              movieId: 'tt0319061',
+              movieId: 587,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -627,7 +620,7 @@ const main = async () => {
           
               rtScore: 89,
               sortTitle: 'Big Hero 6',
-              movieId: 'tt2245084',
+              movieId: 177572,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -638,7 +631,7 @@ const main = async () => {
           
               rtScore: 83,
               sortTitle: 'Big Lebowski',
-              movieId: 'tt0118715',
+              movieId: 115,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -649,7 +642,7 @@ const main = async () => {
           
               rtScore: 79,
               sortTitle: 'Birdcage',
-              movieId: 'tt0115685',
+              movieId: 11000,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -660,7 +653,7 @@ const main = async () => {
           
               rtScore: 88,
               sortTitle: 'Black Bear',
-              movieId: 'tt9601220',
+              movieId: 624788,
               addedDate: new Date('2020-12-13'),
             },
             {
@@ -671,7 +664,7 @@ const main = async () => {
               collection: 6,
               rtScore: 97,
               sortTitle: 'Black Panther',
-              movieId: 'tt1825683',
+              movieId: 284054,
               addedDate: new Date('2019-11-02'),
             },
             {
@@ -682,7 +675,7 @@ const main = async () => {
           
               rtScore: 71,
               sortTitle: 'Black Sheep',
-              movieId: 'tt0779982',
+              movieId: 3603,
               addedDate: new Date('2020-02-16'),
             },
             {
@@ -693,7 +686,7 @@ const main = async () => {
           
               rtScore: 85,
               sortTitle: 'Black Swan',
-              movieId: 'tt0947798',
+              movieId: 44214,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -704,7 +697,7 @@ const main = async () => {
               collection: 6,
               rtScore: 79,
               sortTitle: 'Black Widow',
-              movieId: 'tt3480822',
+              movieId: 497698,
               addedDate: new Date('2021-10-14'),
             },
             {
@@ -715,7 +708,7 @@ const main = async () => {
           
               rtScore: 96,
               sortTitle: 'BlacKkKlansman',
-              movieId: 'tt7349662',
+              movieId: 487558,
               addedDate: new Date('2020-08-28'),
             },
             {
@@ -726,7 +719,7 @@ const main = async () => {
           
               rtScore: 90,
               sortTitle: 'Blade Runner',
-              movieId: 'tt0083658',
+              movieId: 78,
               addedDate: new Date('2021-06-26'),
             },
             {
@@ -737,7 +730,7 @@ const main = async () => {
           
               rtScore: 87,
               sortTitle: 'Blade Runner: 2049',
-              movieId: 'tt1856101',
+              movieId: 335984,
               addedDate: new Date('2020-05-23'),
             },
             {
@@ -748,7 +741,7 @@ const main = async () => {
           
               rtScore: 44,
               sortTitle: 'Blindness',
-              movieId: 'tt0861689',
+              movieId: 8338,
               addedDate: new Date('2020-03-23'),
             },
             {
@@ -759,7 +752,7 @@ const main = async () => {
           
               rtScore: 61,
               sortTitle: 'Bohemian Rhapsody',
-              movieId: 'tt1727824',
+              movieId: 424694,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -770,7 +763,7 @@ const main = async () => {
           
               rtScore: 68,
               sortTitle: 'Bombshell',
-              movieId: 'tt6394270',
+              movieId: 525661,
               addedDate: new Date('2021-06-29'),
             },
             {
@@ -780,7 +773,7 @@ const main = async () => {
               genre: 3,
               rtScore: 47,
               sortTitle: 'Book of Eli',
-              movieId: 'tt1037705',
+              movieId: 20504,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -790,7 +783,7 @@ const main = async () => {
               genre: 2,
               rtScore: 82,
               sortTitle: 'Book of Life',
-              movieId: 'tt2262227',
+              movieId: 228326,
               addedDate: new Date('2020-11-09'),
             },
             {
@@ -800,7 +793,7 @@ const main = async () => {
               genre: 6,
               rtScore: 97,
               sortTitle: 'Booksmart',
-              movieId: 'tt1489887',
+              movieId: 505600,
               addedDate: new Date('2020-05-12'),
             },
             {
@@ -811,7 +804,7 @@ const main = async () => {
               collection: 8,
               rtScore: 83,
               sortTitle: 'Bourne Identity',
-              movieId: 'tt0258463',
+              movieId: 2501,
               addedDate: new Date('2020-08-30'),
             },
             {
@@ -822,7 +815,7 @@ const main = async () => {
               collection: 8,
               rtScore: 55,
               sortTitle: 'Bourne Legacy',
-              movieId: 'tt1194173',
+              movieId: 49040,
               addedDate: new Date('2020-08-31'),
             },
             {
@@ -833,7 +826,7 @@ const main = async () => {
               collection: 8,
               rtScore: 82,
               sortTitle: 'Bourne Supremacy',
-              movieId: 'tt0372183',
+              movieId: 2502,
               addedDate: new Date('2020-08-30'),
             },
             {
@@ -844,7 +837,7 @@ const main = async () => {
               collection: 8,
               rtScore: 92,
               sortTitle: 'Bourne Ultimatum',
-              movieId: 'tt0440963',
+              movieId: 2503,
               addedDate: new Date('2020-08-30'),
             },
             {
@@ -854,7 +847,7 @@ const main = async () => {
               genre: 2,
               rtScore: 76,
               sortTitle: 'Boxtrolls',
-              movieId: 'tt0787474',
+              movieId: 170687,
               addedDate: new Date('2019-07-24'),
             },
             {
@@ -864,7 +857,7 @@ const main = async () => {
               genre: 5,
               rtScore: 30,
               sortTitle: 'Boy',
-              movieId: 'tt3882082',
+              movieId: 321258,
               addedDate: new Date('2020-09-01'),
             },
             {
@@ -874,7 +867,7 @@ const main = async () => {
               genre: 15,
               rtScore: 80,
               sortTitle: 'Boy Erased',
-              movieId: 'tt7008872',
+              movieId: 472451,
               addedDate: new Date('2021-06-2'),
             },
             {
@@ -885,7 +878,7 @@ const main = async () => {
               collection: 9,
               rtScore: 78,
               sortTitle: 'Brave',
-              movieId: 'tt1217209',
+              movieId: 62177,
               addedDate: new Date('2020-05-12'),
             },
             {
@@ -895,7 +888,7 @@ const main = async () => {
               genre: 2,
               rtScore: 77,
               sortTitle: 'Brave Little Toaster',
-              movieId: 'tt0092695',
+              movieId: 19933,
               addedDate: new Date('2020-12-10'),
             },
             {
@@ -905,7 +898,7 @@ const main = async () => {
               genre: 3,
               rtScore: 98,
               sortTitle: 'Brazil',
-              movieId: 'tt0088846',
+              movieId: 68,
               addedDate: new Date('2020-12-05'),
             },
             {
@@ -915,7 +908,7 @@ const main = async () => {
               genre: 6,
               rtScore: 90,
               sortTitle: 'Bridesmaids',
-              movieId: 'tt1478338',
+              movieId: 55721,
               addedDate: new Date('2020-02-16'),
             },
             {
@@ -925,7 +918,7 @@ const main = async () => {
               genre: 15,
               rtScore: 90,
               sortTitle: 'Bridges of Madison County',
-              movieId: 'tt0112579',
+              movieId: 688,
               addedDate: new Date('2021-06-25'),
             },
             {
@@ -935,7 +928,7 @@ const main = async () => {
               genre: 3,
               rtScore: 57,
               sortTitle: 'Brightburn',
-              movieId: 'tt7752126',
+              movieId: 531309,
               addedDate: new Date('2021-10-31'),
             },
             {
@@ -945,7 +938,7 @@ const main = async () => {
               genre: 6,
               rtScore: 48,
               sortTitle: 'Bruce Almighty',
-              movieId: 'tt0315327',
+              movieId: 310,
               addedDate: new Date('2020-02-10'),
             },
             {
@@ -956,15 +949,32 @@ const main = async () => {
               collection: 9,
               rtScore: 92,
               sortTitle: "Bug's Life",
-              movieId: 'tt0120623',
+              movieId: 9487,
               addedDate: new Date('2019-07-24'),
             },
           ]
-    });
 
-    if(newMovies) {
-        console.log('! new Movies !')
-    }
+    movies.forEach(async movie => {
+        const found = await prisma.movies.findFirst({
+            where: {
+                title: movie.title,
+                releaseYear: movie.releaseYear,
+            }
+        });
+
+        if(found) {
+            await prisma.movies.update({
+                where: {
+                    id: found.id,
+                },
+                data: {
+                    movieId: movie.movieId,
+                }
+            })
+        } else {
+            console.error('Unable to locate movie: ', movie.title)
+        }
+    })
 };
 
 main().then(async () => {

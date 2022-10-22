@@ -1,5 +1,6 @@
 import { Collections, Directors, Genres, Movies } from "@prisma/client";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import Image from 'next/image';
+import React, { useState } from "react";
 import { trpc } from "../utils/trpc";
 
 const MoreInfoModal: React.FC<{ movie: (Movies & {
@@ -8,8 +9,8 @@ const MoreInfoModal: React.FC<{ movie: (Movies & {
     Collections: Collections | null;
 }) }> = ({ movie }) => {
   const [opened, setOpened] = useState(false);
-  const { data, isSuccess, isError } = trpc.movies.getOmdb.useQuery(
-    { id: movie.movieId! },
+  const { data, isSuccess, isError } = trpc.movies.getTMDB.useQuery(
+    { id: movie.movieId },
     {
       enabled: opened,
       refetchOnWindowFocus: false,
@@ -42,19 +43,16 @@ const MoreInfoModal: React.FC<{ movie: (Movies & {
           {isSuccess && (
             <div className="mt-5 flex items-stretch justify-between gap-5">
               <div className="w-1/3">
-                <img src={data?.Poster} className="object-cover" />
+                <Image src={`https://image.tmdb.org/t/p/w500${data?.poster_path}`} className="object-cover" alt={`Poster for ${data?.title}`} />
               </div>
               <div className="flex w-2/3 flex-col justify-start gap-5">
                 <div className='whitespace-normal'>
-                <h3 className="text-left text-xl font-bold ">{movie.title} <span className='badge whitespace-normal'>{data.Rated}</span></h3>
+                <h3 className="text-left text-xl font-bold ">{movie.title}</h3>
                 </div>
                 <h4 className="whitespace-normal text-left text-sm">
                   Director: {movie.Directors.name}
                 </h4>
-                <h4 className="whitespace-normal text-left text-sm">
-                  Written By: {data?.Writer}
-                </h4>
-                <p className="whitespace-pre-wrap text-left">{data?.Plot}</p>
+                <p className="whitespace-pre-wrap text-left">{data?.overview}</p>
               </div>
             </div>
           )}

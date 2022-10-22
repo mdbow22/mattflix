@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import { useEffect, useState } from 'react';
 import MoreInfoModal from '../components/MoreInfoModal';
 import { trpc } from '../utils/trpc';
 

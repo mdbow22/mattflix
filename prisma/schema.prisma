@@ -73,7 +73,7 @@ model Movies {
     collection      Int?
     rtScore         Int?
     sortTitle       String
-    movieId         String?         @unique
+    movieId         Int             @unique
     addedDate       DateTime
     Directors       Directors       @relation(fields: [director], references: [id])
     Genres          Genres          @relation(fields: [genre], references: [id])

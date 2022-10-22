@@ -2,6 +2,7 @@ import { router, publicProcedure } from "../trpc";
 import { DateTime } from "luxon";
 import { env } from "../../../env/server.mjs";
 import { z } from 'zod';
+import { TMDBSearchMovie, TMDBSearch, TMDBMovieDetails } from '../../../types/tmdb.types';
 
 export interface OmdbRatings {
   Source: string;
@@ -101,13 +102,13 @@ export const movieRouter = router({
       },
     });
   }),
-  getOmdb: publicProcedure
+  getTMDB: publicProcedure
     .input(z.object({
-      id: z.string(),
+      id: z.number(),
     }))
     .query( async ({ input }) => {
-      const data = await fetch(`http://www.omdbapi.com/?apikey=${env.OMDB_KEY}&i=${input.id}&plot=short`);
-      const res = await data.json();
+      const data = await fetch(`https://api.themoviedb.org/3/movie/${input.id}?api_key=${env.TMDB_KEY}`);
+      const res: TMDBMovieDetails = await data.json();
 
       return res;
     }),
@@ -117,67 +118,35 @@ export const movieRouter = router({
     }))
     .mutation(async ({ input, ctx }) => {
       console.log('Title passed: ', input.title);
-      const omdbData = await fetch(`http://www.omdbapi.com/?apikey=${env.OMDB_KEY}&s=${input.title}&type=movie`)
+      const tmdb = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${env.TMDB_KEY}&query=${input.title.split(' ').join('+')}`)
+      if(tmdb.ok) {
+        const data: TMDBSearch = await tmdb.json();
 
-      if(omdbData.ok) {
-        const data: OmdbSearchResponse = await omdbData.json();
-        console.log('The data: ', data);
-        if(data.Response === 'True') {
-
+        if(data.total_results > 0) {
           const possibleMatches = await ctx.prisma.movies.findMany({
             where: {
-              title: {
-                contains: input.title,
+              movieId: {
+                in: data.results.map(movie => movie.id),
               }
             },
             select: {
               movieId: true,
             }
           })
-  
-          const justTitles = possibleMatches.map(movie => movie.movieId);
-  
-          const returnData = data.Search.map((movie, i: number) => {
-              return ({
-                ...movie,
-                inCatalogue: justTitles.includes(movie.imdbID),
-              })
-            }
-          )
-  
+
+          const justIds = possibleMatches.map(movie => movie.movieId);
+
+          const returnData: TMDBSearchMovie[] = data.results.map(movie => {
+            return ({
+              ...movie,
+              inCatalogue: justIds.includes(movie.id),
+            })
+          })
+
           return returnData;
         }
-        
+
+        return [];
       }
-
-      return [];
-      
-      // const possibleMatches = await ctx.prisma.movies.findMany({
-      //   where: {
-      //     title: {
-      //       contains: input.title,
-      //       mode: 'insensitive',
-      //     }
-      //   }
-      // });
-
-      // if(possibleMatches) {
-      //   const withOmdbData = possibleMatches.map(async (movie) => {
-      //     const data = await fetch(
-      //       `http://www.omdbapi.com/?apikey=${env.OMDB_KEY}&i=${movie.movieId}`
-      //     );
-      //     const res = await data.json();
-      //     return {
-      //       ...movie,
-      //       omdb: {
-      //         rating: res.Rated,
-      //         plot: res.Plot,
-      //         poster: res.Poster,
-      //       },
-      //     };
-      //   });
-  
-      //   return Promise.all(withOmdbData);
-      // }
     })
 });

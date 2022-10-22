@@ -1,7 +1,8 @@
-import { Movies } from "@prisma/client";
 import { NextPage } from "next";
+import Image from 'next/image';
 import { useEffect, useState } from "react";
-import { OmdbResponse } from '../server/trpc/router/movies';
+import { TMDBSearchMovie } from '../types/tmdb.types';
+import { useDebounce } from '../utils/debounce';
 import { trpc } from "../utils/trpc";
 
 export interface PossibleMatchMovie {
@@ -16,31 +17,23 @@ export interface PossibleMatchMovie {
 const Request: NextPage = () => {
   const [title, setTitle] = useState("");
   const [movieResults, setMovieResults] = useState<
-    PossibleMatchMovie[] | undefined
+    TMDBSearchMovie[] | undefined
   >();
-  const [filteredResults, setFilteredResults] = useState<
-  PossibleMatchMovie[] | undefined
->();
 
   const searchMovies = trpc.movies.searchMovies.useMutation();
+  const searchTerm = useDebounce(title, 500)
 
-  const movieSearch = (value: string) => {
-    setTitle(value);
-    if (value.length === 3 || (value.length > 3 && value.length % 2 === 0)) {
-      searchMovies.mutate({
-        title: value.toLowerCase().split(' ').join('+'),
-      });
-    } else if(value.length > 3 && movieResults?.length) {
-        setFilteredResults(movieResults.filter(movie => movie.Title.toLowerCase().includes(title.toLowerCase())));
-    } else {
-      return;
+useEffect(() => {
+    if(searchTerm) {
+        searchMovies.mutate({
+            title: searchTerm.toLowerCase(),
+            });
     }
-  };
+}, [searchTerm])
 
   useEffect(() => {
     if (searchMovies.data) {
       setMovieResults(searchMovies.data);
-      setFilteredResults(searchMovies.data);
     }
   }, [searchMovies.data]);
 
@@ -57,23 +50,23 @@ const Request: NextPage = () => {
             id="movieTitle"
             className="input input-bordered input-primary"
             value={title}
-            onChange={(e) => movieSearch(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
       </form>
-      {!!filteredResults?.length && (
+      {!!movieResults?.length && (
         <>
           <h2 className="text-3xl mt-10">Possible Matches</h2>
-          <div className="mt-5 flex flex-wrap gap-10">
-            {filteredResults?.map((movie) => {
+          <div className="mt-5 flex flex-wrap gap-10 justify-between">
+            {movieResults?.sort((a, b) => a.vote_average > b.vote_average ? -1 : 1)?.map((movie) => {
               return (
-                <div key={movie.imdbID} className="flex flex-col justify-between text-center text-lg w-32">
-                  <img
-                    className="w-32"
-                    src={movie.Poster}
-                    alt={`Poster for ${movie.Title}`}
+                <div key={movie.id} className="flex flex-col justify-between text-center text-lg w-40">
+                  <Image
+                    className="w-40"
+                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    alt={`Poster for ${movie.title}`}
                   />
-                  <span>{movie.Title}</span>
+                  <span>{movie.title}</span>
                 </div>
               );
             })}

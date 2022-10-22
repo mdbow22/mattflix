@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import Image from 'next/image';
 import Link from "next/link";
-import Loader from '../components/Loader';
+import Loader from "../components/Loader";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
@@ -22,7 +23,7 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="container mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center p-4">
+      <main className="container mx-auto flex min-h-screen max-w-5xl flex-col items-center p-4">
         <h1 className="text-5xl font-extrabold leading-normal text-primary  md:text-[5rem]">
           Mattflix
         </h1>
@@ -37,20 +38,18 @@ const Home: NextPage = () => {
             </button>
           </Link>
           <Link href="/request">
-          <button
-            type="button"
-            className="btn btn-outline"
-            //className="rounded border border-white/95 px-3 py-2 transition-all hover:bg-white/75 hover:text-black/90 active:scale-95"
-          >
-            Request
-          </button>
+            <button
+              type="button"
+              className="btn btn-outline"
+              //className="rounded border border-white/95 px-3 py-2 transition-all hover:bg-white/75 hover:text-black/90 active:scale-95"
+            >
+              Request
+            </button>
           </Link>
         </div>
         <div id="recent-adds-table" className="mt-10">
           <h2 className="text-center text-3xl">New Additions</h2>
-          {isLoading &&
-            <Loader />
-          }
+          {isLoading && <Loader />}
           {!isLoading && isSuccess && (
             <div className="mt-5 flex flex-wrap items-start justify-around gap-5">
               {data?.map((movie) => {
@@ -60,7 +59,7 @@ const Home: NextPage = () => {
                     className="flex w-32 flex-col items-center"
                   >
                     <div>
-                      <img
+                      <Image
                         src={movie.omdb.poster}
                         className="w-32"
                         alt={`poster for ${movie.title}`}
@@ -85,7 +84,7 @@ const Home: NextPage = () => {
                     tabIndex={i}
                   >
                     <div>
-                      <img
+                      <Image
                         src={request.omdb.poster}
                         className="h-52 object-cover"
                         alt={`poster for ${request.title}`}
@@ -97,6 +96,19 @@ const Home: NextPage = () => {
               })}
             </div>
           )}
+        </div>
+        <div className=" mt-auto text-center">
+          <p>
+            Plots, Pictures, and Casting Info provided by{" "}
+            <a
+              className="link"
+              href="https://www.themoviedb.org"
+              target="_blank"
+              rel="noreferrer"
+            >
+              The Movie Database
+            </a>
+          </p>
         </div>
       </main>
     </>
