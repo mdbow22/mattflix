@@ -1,17 +1,18 @@
 import { NextPage } from "next";
-import Image from 'next/image';
+import Image from "next/image";
 import { useEffect, useState } from "react";
-import { TMDBSearchMovie } from '../types/tmdb.types';
-import { useDebounce } from '../utils/debounce';
+import RequestModal from "../components/RequestModal";
+import { TMDBSearchMovie } from "../types/tmdb.types";
+import { useDebounce } from "../utils/debounce";
 import { trpc } from "../utils/trpc";
 
 export interface PossibleMatchMovie {
-    inCatalogue: boolean;
-    Title: string;
-    Year: string;
-    imdbID: string;
-    Type: string;
-    Poster: string;
+  inCatalogue: boolean;
+  Title: string;
+  Year: string;
+  imdbID: string;
+  Type: string;
+  Poster: string;
 }
 
 const Request: NextPage = () => {
@@ -21,15 +22,19 @@ const Request: NextPage = () => {
   >();
 
   const searchMovies = trpc.movies.searchMovies.useMutation();
-  const searchTerm = useDebounce(title, 500)
+  const searchTerm = useDebounce(title, 500);
+  const [modalOptions, setModalOptions] = useState<{
+    show: boolean;
+    movie: TMDBSearchMovie | undefined;
+  }>({show: false, movie: undefined});
 
-useEffect(() => {
-    if(searchTerm) {
-        searchMovies.mutate({
-            title: searchTerm.toLowerCase(),
-            });
+  useEffect(() => {
+    if (searchTerm) {
+      searchMovies.mutate({
+        title: searchTerm.toLowerCase(),
+      });
     }
-}, [searchTerm])
+  }, [searchTerm]);
 
   useEffect(() => {
     if (searchMovies.data) {
@@ -56,23 +61,36 @@ useEffect(() => {
       </form>
       {!!movieResults?.length && (
         <>
-          <h2 className="text-3xl mt-10">Possible Matches</h2>
-          <div className="mt-5 flex flex-wrap gap-10 justify-between">
-            {movieResults?.sort((a, b) => a.vote_average > b.vote_average ? -1 : 1)?.map((movie) => {
-              return (
-                <div key={movie.id} className="flex flex-col justify-between text-center text-lg w-40">
-                  <Image
-                    className="w-40"
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                    alt={`Poster for ${movie.title}`}
-                  />
-                  <span>{movie.title}</span>
-                </div>
-              );
-            })}
+          <h2 className="mt-10 text-3xl">Possible Matches</h2>
+          <div className="mt-5 flex flex-wrap justify-between gap-10">
+            {movieResults
+              ?.sort((a, b) => (a.vote_average > b.vote_average ? -1 : 1))
+              ?.map((movie) => {
+                return (
+                  <button
+                    key={movie.id}
+                    className="flex w-40 h-full flex-col justify-between items-center text-center text-lg"
+                    onClick={() =>
+                      setModalOptions({ show: true, movie: movie })
+                    }
+                  >
+                    <img
+                      className="w-40 rounded-lg shadow-lg shadow-slate-900"
+                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                      alt={`Poster for ${movie.title}`}
+                    />
+                    <div className='text-center'>{movie.title}</div>
+                  </button>
+                );
+              })}
           </div>
         </>
       )}
+      <RequestModal
+        show={modalOptions?.show}
+        setShow={setModalOptions}
+        movie={modalOptions?.movie}
+      />
     </div>
   );
 };

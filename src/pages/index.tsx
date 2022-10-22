@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from 'next/image';
 import Link from "next/link";
 import Loader from "../components/Loader";
 import { trpc } from "../utils/trpc";
@@ -59,7 +58,7 @@ const Home: NextPage = () => {
                     className="flex w-32 flex-col items-center"
                   >
                     <div>
-                      <Image
+                      <img
                         src={movie.omdb.poster}
                         className="w-32"
                         alt={`poster for ${movie.title}`}
@@ -84,7 +83,7 @@ const Home: NextPage = () => {
                     tabIndex={i}
                   >
                     <div>
-                      <Image
+                      <img
                         src={request.omdb.poster}
                         className="h-52 object-cover"
                         alt={`poster for ${request.title}`}
