@@ -50,21 +50,21 @@ const Home: NextPage = () => {
           <h2 className="text-center text-3xl">New Additions</h2>
           {isLoading && <Loader />}
           {!isLoading && isSuccess && (
-            <div className="mt-5 flex flex-wrap items-start justify-around gap-5">
+            <div className="mt-5 flex flex-wrap items-start justify-around gap-10">
               {data?.map((movie) => {
                 return (
                   <div
                     key={movie.movieId}
-                    className="flex w-32 flex-col items-center"
+                    className="flex w-40 flex-col items-center"
                   >
                     <div>
                       <img
-                        src={movie.omdb.poster}
-                        className="w-32"
+                        src={`https://image.tmdb.org/t/p/w500${movie.tmdb.poster}`}
+                        className="w-40 rounded-lg shadow-lg shadow-slate-900"
                         alt={`poster for ${movie.title}`}
                       />
                     </div>
-                    <div className="mt-3 text-center">{movie.title}</div>
+                    <h3 className="mt-3 text-center text-lg">{movie.title}</h3>
                   </div>
                 );
               })}
@@ -72,20 +72,20 @@ const Home: NextPage = () => {
           )}
         </div>
         <div id="recent-adds-table" className="mt-10">
-          <h2 className="text-3xl">Latest Requests</h2>
+          <h2 className="text-3xl text-center">Latest Requests</h2>
           {!requestsLoading && requestSuccess && (
             <div className="mt-5 flex flex-wrap justify-around gap-5">
               {requests?.map((request, i) => {
                 return (
                   <div
                     key={`request-${request.movieId}`}
-                    className="swap-off flex w-32 flex-col items-center"
+                    className="swap-off flex w-40 flex-col items-center"
                     tabIndex={i}
                   >
                     <div>
                       <img
-                        src={request.omdb.poster}
-                        className="h-52 object-cover"
+                        src={`https://image.tmdb.org/t/p/w500${request.tmdb.poster}`}
+                        className="w-40 rounded-lg shadow-lg shadow-slate-900"
                         alt={`poster for ${request.title}`}
                       />
                     </div>
@@ -98,7 +98,7 @@ const Home: NextPage = () => {
         </div>
         <div className=" mt-auto text-center">
           <p>
-            Plots, Pictures, and Casting Info provided by{" "}
+            Movie metadata provided by{" "}
             <a
               className="link"
               href="https://www.themoviedb.org"
@@ -106,7 +106,7 @@ const Home: NextPage = () => {
               rel="noreferrer"
             >
               The Movie Database
-            </a>
+            </a> | Streaming Service Data provided by Just Watch
           </p>
         </div>
       </main>

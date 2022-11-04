@@ -22,11 +22,8 @@ const Request: NextPage = () => {
   >();
 
   const searchMovies = trpc.movies.searchMovies.useMutation();
-  const searchTerm = useDebounce(title, 500);
-  const [modalOptions, setModalOptions] = useState<{
-    show: boolean;
-    movie: TMDBSearchMovie | undefined;
-  }>({show: false, movie: undefined});
+  const searchTerm = useDebounce(title, 300);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     if (searchTerm) {
@@ -67,30 +64,33 @@ const Request: NextPage = () => {
               ?.sort((a, b) => (a.vote_average > b.vote_average ? -1 : 1))
               ?.map((movie) => {
                 return (
-                  <button
-                    key={movie.id}
-                    className="flex w-40 h-full flex-col justify-between items-center text-center text-lg"
-                    onClick={() =>
-                      setModalOptions({ show: true, movie: movie })
-                    }
-                  >
-                    <img
-                      className="w-40 rounded-lg shadow-lg shadow-slate-900"
-                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                      alt={`Poster for ${movie.title}`}
-                    />
-                    <div className='text-center'>{movie.title}</div>
-                  </button>
+                    <div key={movie.id}>
+                        <RequestModal
+                            show={show}
+                            setShow={setShow}
+                            movie={movie}
+                        />
+                    </div>
+                //   <button
+                //     key={movie.id}
+                //     className="flex w-40 h-full flex-col justify-between items-center text-center text-lg"
+                //     onClick={() =>
+                //       setModalOptions({ show: true, movie: movie })
+                //     }
+                //   >
+                //     <img
+                //       className="w-40 rounded-lg shadow-lg shadow-slate-900"
+                //       src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                //       alt={`Poster for ${movie.title}`}
+                //     />
+                //     <div className='text-center'>{movie.title}</div>
+                //   </button>
                 );
               })}
           </div>
         </>
       )}
-      <RequestModal
-        show={modalOptions?.show}
-        setShow={setModalOptions}
-        movie={modalOptions?.movie}
-      />
+      
     </div>
   );
 };

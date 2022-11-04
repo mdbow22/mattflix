@@ -2,7 +2,7 @@ import { router, publicProcedure } from "../trpc";
 import { DateTime } from "luxon";
 import { env } from "../../../env/server.mjs";
 import { z } from 'zod';
-import { TMDBSearchMovie, TMDBSearch, TMDBMovieDetails } from '../../../types/tmdb.types';
+import { TMDBSearchMovie, TMDBSearch, TMDBMovieDetails, MovieProvidersType } from '../../../types/tmdb.types';
 
 export interface OmdbRatings {
   Source: string;
@@ -73,16 +73,13 @@ export const movieRouter = router({
 
     if (recentMovies) {
       const withOmdbData = recentMovies.map(async (movie) => {
-        const data = await fetch(
-          `http://www.omdbapi.com/?apikey=${env.OMDB_KEY}&i=${movie.movieId}`
-        );
-        const res: OmdbResponse = await data.json();
+        const data = await fetch(`https://api.themoviedb.org/3/movie/${movie.movieId}?api_key=${env.TMDB_KEY}`);
+        const res: TMDBMovieDetails = await data.json();
         return {
           ...movie,
-          omdb: {
-            rating: res.Rated,
-            plot: res.Plot,
-            poster: res.Poster,
+          tmdb: {
+            plot: res.overview,
+            poster: res.poster_path,
           },
         };
       });
@@ -123,6 +120,7 @@ export const movieRouter = router({
         const data: TMDBSearch = await tmdb.json();
 
         if(data.total_results > 0) {
+
           const possibleMatches = await ctx.prisma.movies.findMany({
             where: {
               movieId: {
@@ -134,12 +132,25 @@ export const movieRouter = router({
             }
           })
 
+          const possibleRequests = await ctx.prisma.requests.findMany({
+            where: {
+              movieId: {
+                in: data.results.map(movie => movie.id),
+              }
+            },
+            select: {
+              movieId: true,
+            }
+          })
+
           const justIds = possibleMatches.map(movie => movie.movieId);
+          const justReqIds = possibleRequests.map(movie => movie.movieId);
 
           const returnData: TMDBSearchMovie[] = data.results.map(movie => {
             return ({
               ...movie,
               inCatalogue: justIds.includes(movie.id),
+              requested: justReqIds.includes(movie.id),
             })
           })
 
@@ -147,6 +158,20 @@ export const movieRouter = router({
         }
 
         return [];
+      }
+    }),
+  getStreamingInfo: publicProcedure
+    .input(z.object({
+      id: z.number(),
+    }))
+    .query(async ({ input }) => {
+      const data = await fetch(`https://api.themoviedb.org/3/movie/${input.id}/watch/providers?api_key=${env.TMDB_KEY}`);
+
+      const providers: MovieProvidersType = data.ok ? await data.json() : null;
+     
+      if(providers.results && Object.values(providers.results).length) {
+
+        return providers.results.US?.flatrate
       }
     })
 });

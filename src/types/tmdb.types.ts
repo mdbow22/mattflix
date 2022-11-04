@@ -14,6 +14,7 @@ export interface TMDBSearchMovie {
     vote_average: number; // 7.7,
     vote_count: number;
     inCatalogue?: boolean;
+    requested?: boolean;
 }
 
 export interface TMDBSearch {

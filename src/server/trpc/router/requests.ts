@@ -2,6 +2,7 @@ import { router, publicProcedure } from "../trpc";
 import { DateTime } from "luxon";
 import { env } from "../../../env/server.mjs";
 import { z } from 'zod';
+import { TMDBMovieDetails } from '../../../types/tmdb.types';
 
 export const requestRouter = router({
   getNewest: publicProcedure.query(async ({ ctx }) => {
@@ -19,22 +20,18 @@ export const requestRouter = router({
 
     if (requests) {
       const withOmdbData = requests.map(async (movie) => {
-        const data = await fetch(
-          `http://www.omdbapi.com/?apikey=${env.OMDB_KEY}&i=${movie.movieId}`
-        );
-        const res = await data.json();
+        const data = await fetch(`https://api.themoviedb.org/3/movie/${movie.movieId}?api_key=${env.TMDB_KEY}`);
+        const res: TMDBMovieDetails = await data.json();
         return {
           ...movie,
-          omdb: {
-            rating: res.Rated,
-            plot: res.Plot,
-            poster: res.Poster,
+          tmdb: {
+            plot: res.overview,
+            poster: res.poster_path,
           },
         };
       });
 
       return Promise.all(withOmdbData);
-
     }
   }),
   searchRequests: publicProcedure
@@ -51,5 +48,25 @@ export const requestRouter = router({
         })
         
         return possibleMatches;
-    })
+    }),
+    submitRequest: publicProcedure
+        .input(z.object({
+            title: z.string(),
+            year: z.number(),
+            comments: z.string().optional(),
+            movieId: z.number(),
+        }))
+        .mutation(async ({ input, ctx }) => {
+            const newRequest = await ctx.prisma.requests.create({
+                data: {
+                    title: input.title,
+                    addedDate: new Date(),
+                    year: input.year,
+                    movieId: input.movieId,
+                    comments: input.comments,
+                }
+            });
+
+            return newRequest;
+        })
 });
