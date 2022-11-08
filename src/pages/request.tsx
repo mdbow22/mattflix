@@ -1,8 +1,8 @@
 import { NextPage } from "next";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import RequestModal from "../components/RequestModal";
-import { TMDBSearchMovie } from "../types/tmdb.types";
+import TVRequestModal from '../components/TVRequestModal';
+import { TMDBSearchMovie, TMDBSearchTV } from "../types/tmdb.types";
 import { useDebounce } from "../utils/debounce";
 import { trpc } from "../utils/trpc";
 
@@ -17,27 +17,42 @@ export interface PossibleMatchMovie {
 
 const Request: NextPage = () => {
   const [title, setTitle] = useState("");
+  const [tvShow, setTvShow] = useState(false);
   const [movieResults, setMovieResults] = useState<
     TMDBSearchMovie[] | undefined
   >();
+  const [tvResults, setTVResults] = useState<TMDBSearchTV[] | undefined>();
 
   const searchMovies = trpc.movies.searchMovies.useMutation();
+  const searchTV = trpc.tv.searchTV.useMutation();
   const searchTerm = useDebounce(title, 300);
   const [show, setShow] = useState(false);
 
   useEffect(() => {
     if (searchTerm) {
-      searchMovies.mutate({
-        title: searchTerm.toLowerCase(),
-      });
+      if(tvShow) {
+        searchTV.mutate({
+          name: searchTerm.toLowerCase(),
+        })
+      } else {
+        searchMovies.mutate({
+          title: searchTerm.toLowerCase(),
+        });
+      }
     }
-  }, [searchTerm]);
+  }, [searchTerm, tvShow]);
 
   useEffect(() => {
-    if (searchMovies.data) {
+    if (searchMovies.data && !tvShow) {
       setMovieResults(searchMovies.data);
+      setTVResults(undefined);
     }
-  }, [searchMovies.data]);
+
+    if(searchTV.data && tvShow) {
+      setMovieResults(undefined)
+      setTVResults(searchTV.data)
+    }
+  }, [searchMovies.data, searchTV.data, tvShow]);
 
   return (
     <div className="container mx-auto mt-10 max-w-5xl">
@@ -55,6 +70,13 @@ const Request: NextPage = () => {
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
+        <div className="form-control w-52">
+          <label className="cursor-pointer label">
+            <span className="label-text text-lg">Movies</span> 
+            <input type="checkbox" className="toggle toggle-primary" checked={tvShow} onClick={() => setTvShow(prev => !prev)} />
+            <span className='label-text text-lg'>TV Shows</span>
+          </label>
+        </div>
       </form>
       {!!movieResults?.length && (
         <>
@@ -71,26 +93,31 @@ const Request: NextPage = () => {
                             movie={movie}
                         />
                     </div>
-                //   <button
-                //     key={movie.id}
-                //     className="flex w-40 h-full flex-col justify-between items-center text-center text-lg"
-                //     onClick={() =>
-                //       setModalOptions({ show: true, movie: movie })
-                //     }
-                //   >
-                //     <img
-                //       className="w-40 rounded-lg shadow-lg shadow-slate-900"
-                //       src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                //       alt={`Poster for ${movie.title}`}
-                //     />
-                //     <div className='text-center'>{movie.title}</div>
-                //   </button>
                 );
               })}
           </div>
         </>
       )}
-      
+      {!!tvResults?.length && (
+        <>
+         <h2 className="mt-10 text-3xl">Possible Matches</h2>
+          <div className="mt-5 flex flex-wrap justify-between gap-10">
+        {tvResults?.sort((a, b) => (a.vote_average > b.vote_average) ? -1 : 1)
+          ?.map(tv => {
+            return (
+              <div key={tv.id}>
+                <TVRequestModal
+                  show={show}
+                  setShow={setShow}
+                  tv={tv}
+                />
+              </div>
+            )
+          })
+        }
+        </div>
+        </>
+      )}
     </div>
   );
 };

@@ -106,3 +106,23 @@ model Requests {
     addedDate       DateTime
     movieId         Int         @unique
 }
+
+model TVShows {
+    id          Int         @id @default(autoincrement())
+    name        String  
+    seasons     Int
+    addedDate   DateTime
+    firstAired  DateTime
+    createdBy   String
+    genre       String
+    tvId        Int         @unique
+}
+
+model TVRequest {
+    id              Int         @id @default(autoincrement())
+    name            String
+    comments        String?
+    originalAir     Int?
+    addedDate       DateTime
+    tvId            Int         @unique
+}

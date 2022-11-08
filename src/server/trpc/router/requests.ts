@@ -68,5 +68,25 @@ export const requestRouter = router({
             });
 
             return newRequest;
+        }),
+    submitTVRequest: publicProcedure
+        .input(z.object({
+          name: z.string(),
+          originalAir: z.number(),
+          comments: z.string().optional(),
+          tvId: z.number(),
+        }))
+        .mutation(async ({ input, ctx }) => {
+          const newRequest = await ctx.prisma.tVRequest.create({
+            data: {
+              name: input.name,
+              addedDate: new Date(),
+              originalAir: input.originalAir,
+              comments: input.comments,
+              tvId: input.tvId,
+            }
+          });
+
+          return newRequest;
         })
 });

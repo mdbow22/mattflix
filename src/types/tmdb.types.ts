@@ -18,10 +18,10 @@ export interface TMDBSearchMovie {
 }
 
 export interface TMDBSearch {
-    page: 1,
-	results: TMDBSearchMovie[],
-	total_pages: 1,
-	total_results: 2
+    page: number;
+	results: TMDBSearchMovie[];
+	total_pages: number;
+	total_results: number;
 }
 
 export interface TMDBMovieDetails {
@@ -83,4 +83,29 @@ export interface MovieProvidersType {
             buy: JustWatchProviderType[];
         };
     }
+}
+
+export interface TMDBSearchTV {
+    popularity: number; // 54.566,
+    poster_path: string | null; // "/4MpN4kIEqUjW8OPtOQJXlTdHiJV.jpg",
+    id: number;
+    backdrop_path: string | null; // "/ew5FcYiRhTYNJAkxoVPMNlCOdVn.jpg",
+    vote_average: number; // 7.7,
+    overview: string;
+    first_air_date: string; // "2011-04-17"
+    genre_ids: number[];
+    origin_country: string[];
+    original_language: string; // "en",
+    vote_count: number;
+    name: string;
+    original_name: string;
+    inCatalogue?: boolean;
+    requested?: boolean;
+}
+
+export interface TVSearch {
+    page: number;
+	results: TMDBSearchTV[];
+	total_pages: number;
+	total_results: number;
 }
