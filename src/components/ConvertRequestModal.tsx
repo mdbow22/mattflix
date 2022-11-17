@@ -17,6 +17,7 @@ export interface RequestConversion {
 const ConvertRequestModal: React.FC<{ request: Requests }> = ({ request }) => {
   const [opened, setOpened] = useState(false);
   const [submitTried, setSubmitTried] = useState(false);
+  const [submitState, setSubmitState] = useState<'loading' | 'success' | 'error' | ''>('');
 
   const context = trpc.useContext();
   const { data, isSuccess } = trpc.movies.getTMDB.useQuery(
@@ -37,8 +38,12 @@ const ConvertRequestModal: React.FC<{ request: Requests }> = ({ request }) => {
 
   const convertRequest = trpc.requests.convertMovieRequest.useMutation({
     onSuccess: () => {
+        setSubmitState('success')
         context.requests.getAllRequests.refetch();
     },
+    onError: () => {
+        setSubmitState('error');
+    }
   });
 
   const initFormState = {
@@ -99,7 +104,7 @@ const ConvertRequestModal: React.FC<{ request: Requests }> = ({ request }) => {
     if(!validForm()) {
         return;
     }
-    
+    setSubmitState('loading')
     convertRequest.mutate(form);
   }
 
@@ -191,8 +196,11 @@ const ConvertRequestModal: React.FC<{ request: Requests }> = ({ request }) => {
               </div>
             </div>
           )}
-            <button type="button" className="btn btn-primary mt-5 w-full" onClick={() => submit()}>
-                Add
+            <button type="button" className={`btn btn-primary mt-5 w-full ${submitState === 'loading' && 'loading'}`} onClick={() => submit()}>
+                {submitState === 'loading' ?
+                '' : submitState === 'error' ? 'X' :
+                    'Add'
+                }
             </button>
         </div>
       </div>
