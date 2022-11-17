@@ -5,6 +5,23 @@ import { z } from 'zod';
 import { TMDBMovieDetails } from '../../../types/tmdb.types';
 
 export const requestRouter = router({
+  getAllRequests: publicProcedure.query(async ({ ctx }) => {
+    const tvRequests = await ctx.prisma.tVRequest.findMany({
+      where: {
+        completed: null,
+      }
+    });
+    const movieRequests = await ctx.prisma.requests.findMany({
+      where: {
+        completed: null,
+      }
+    });
+
+    return ({
+      movieRequests,
+      tvRequests,
+    })
+  }),
   getNewest: publicProcedure.query(async ({ ctx }) => {
     const requests = await ctx.prisma.requests.findMany({
       where: {
@@ -88,5 +105,72 @@ export const requestRouter = router({
           });
 
           return newRequest;
-        })
+        }),
+    convertMovieRequest: publicProcedure
+        .input(z.object({
+          title: z.string(),
+          director: z.string(),
+          addedDate: z.date(),
+          genre: z.string(),
+          collection: z.string().optional(),
+          releaseYear: z.number(),
+          rtScore: z.number(),
+          movieId: z.number(),
+        }))
+        .mutation(async ({ input, ctx }) => {
+
+          const titleArr = input.title.split(' ');
+
+          if(titleArr[0] === 'The' || titleArr[0] === 'A' || titleArr[0] === 'An') {
+            titleArr.shift();
+          }
+
+          const query = {
+            title: input.title,
+            addedDate: input.addedDate,
+            releaseYear: input.releaseYear,
+            rtScore: input.rtScore,
+            movieId: input.movieId,
+            sortTitle: titleArr.join(' '),
+            Directors: {
+              connectOrCreate: {
+                create: {
+                  name: input.director,
+                },
+                where: {
+                  name: input.director,
+                }
+              }
+            },
+            Genres: {
+              connectOrCreate: {
+                create: {
+                  name: input.genre,
+                },
+                where: {
+                  name: input.genre,
+                }
+              }
+            },
+            ...(input.collection && { Collections: { connectOrCreate: { create: { name: input.collection }, where: { name: input.collection }}}})
+          }
+
+          const newMovie = await ctx.prisma.movies.create({
+            data: query,
+          })
+
+          if(newMovie) {
+
+            const completeRequest = await ctx.prisma.requests.update({
+              where: {
+                movieId: input.movieId,
+              },
+              data: {
+                completed: new Date(),
+              }
+            })
+
+            return {newMovie, completeRequest};
+          }
+        }),
 });

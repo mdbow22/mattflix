@@ -2,62 +2,14 @@ import { router, publicProcedure } from "../trpc";
 import { DateTime } from "luxon";
 import { env } from "../../../env/server.mjs";
 import { z } from 'zod';
-import { TMDBSearchMovie, TMDBSearch, TMDBMovieDetails, MovieProvidersType } from '../../../types/tmdb.types';
-
-export interface OmdbRatings {
-  Source: string;
-  Value: string; // formats: 6.4/10 or 81% or 58/100
-}
-
-export interface OmdbResponse {
-  Title: string;
-  Year: string;
-  Rated: string;
-  Released:string; // format: 21 Oct 1988
-  Runtime: string; // format: 105min
-  Genre: string; // csv
-  Director: string;
-  Writer: string; //csv
-  Actors: string; // csv
-  Plot: string;
-  Language: string;
-  Country: string;
-  Awards: string; // format: 16 wins & 48 nominations
-  Poster: string;
-  Ratings: OmdbRatings[];
-  Metascore: string;
-  imdbRating: string;
-  imdbVotes: string;
-  imdbID: string;
-  Type: string;
-  DVD: string; // format: 24 Apr 2007
-  BoxOffice: string; //format: $3,966,256
-  Production: string;
-  Website: string;
-  Response: string; //format True
-  inCatalogue?: boolean;
-}
-
-export interface OmdbSearchItem {
-  Title: string;
-  Year: string;
-  imdbID: string;
-  Type: string;
-  Poster: string;
-}
-
-export interface OmdbSearchResponse {
-  Search: OmdbSearchItem[];
-  totalResults: string;
-  Response: string;
-}
+import { TMDBSearchMovie, TMDBSearch, TMDBMovieDetails, MovieProvidersType, Credits } from '../../../types/tmdb.types';
 
 export const movieRouter = router({
   getLatest: publicProcedure.query(async ({ ctx }) => {
     const recentMovies = await ctx.prisma.movies.findMany({
       where: {
         addedDate: {
-          gte: DateTime.now().startOf('month').toJSDate(),
+          gte: DateTime.now().minus({days: 30}).toJSDate(),
         },
       },
       include: {
@@ -173,5 +125,20 @@ export const movieRouter = router({
 
         return providers.results.US?.flatrate
       }
+    }),
+  getCredits: publicProcedure
+    .input(z.object({
+      id: z.number(),
+    }))
+    .query(async ({ input }) => {
+      const data = await fetch(`https://api.themoviedb.org/3/movie/${input.id}/credits?api_key=${env.TMDB_KEY}`);
+
+      const credits: Credits = data.ok ? await data.json() : null;
+      if(credits) {
+        return credits;
+      }
+
+      return null;
     })
+  
 });

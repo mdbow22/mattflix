@@ -22,7 +22,7 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="container mx-auto flex min-h-screen max-w-5xl flex-col items-center p-4">
+      <main className="container mx-auto flex min-h-screen max-w-6xl flex-col items-center p-4">
         <h1 className="text-5xl font-extrabold leading-normal text-primary  md:text-[5rem]">
           Mattflix
         </h1>
@@ -50,7 +50,7 @@ const Home: NextPage = () => {
           <h2 className="text-center text-3xl">New Additions</h2>
           {isLoading && <Loader />}
           {!isLoading && isSuccess && (
-            <div className="mt-5 flex flex-wrap items-start justify-around gap-10">
+            <div className="mt-5 flex flex-wrap items-start justify-around gap-5">
               {data?.map((movie) => {
                 return (
                   <div
